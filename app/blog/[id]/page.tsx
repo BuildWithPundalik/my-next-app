@@ -1,25 +1,148 @@
-'use client';
-import { Button } from "@/components/ui/button";
+// app/blog/[id]/page.tsx
 import Link from "next/link";
-import BlogDescription from "@/components/sections/blog/blogDescription";
-import BlogCards from "@/components/sections/blog/blogCards";
-import BlogHero from "@/components/sections/blog/blogHero";
-import Cta from "@/components/sections/cta";
-import { useState,useEffect } from "react";
+import Image from "next/image";
+import { Button } from "@/components/ui/button";
 
+interface Blog {
+  id: number;
+  title: string;
+  body: string;
+  userId: number;
+}
 
-export default function BlogPage() {
-  const [blogs, setBlogs] = useState([]);
-  useEffect(() => {
-    const fetchBlogs = async () => {
-      const res = await fetch("/api/blogs", { cache: "no-store" });
-      if (!res.ok) throw new Error("Failed to fetch blogs");
-      const data = await res.json();
-      setBlogs(data.blogs);
-    };
-    fetchBlogs();
-  }, []);
+interface PageProps {
+  params: Promise<{
+    id: string;
+  }>;
+}
+
+interface ApiResponse {
+  blog: Blog | null;
+}
+
+const placeholderImages = [
+  "https://images.pexels.com/photos/2182970/pexels-photo-2182970.jpeg",
+  "https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg",
+  "https://images.pexels.com/photos/18105/pexels-photo.jpg",
+];
+
+async function getBlog(id: string): Promise<Blog | null> {
+  try {
+    const res = await fetch(`http://localhost:3000/api/blog/${id}`, {
+      cache: "no-store",
+    });
+    
+    if (!res.ok) {
+      throw new Error(`Failed to fetch blog: ${res.status}`);
+    }
+    
+    const data: ApiResponse = await res.json();
+    return data.blog;
+  } catch (error) {
+    console.error("Error fetching blog:", error);
+    return null;
+  }
+}
+
+export default async function BlogPage({ params }: PageProps) {
+  const { id } = await params;
   
+  if (!id) {
+    return (
+      <main className="bg-white text-gray-900 min-h-screen">
+        {/* Header */}
+        <header className="px-8 py-6 border-b border-gray-200">
+          <div className="flex justify-between items-center max-w-6xl mx-auto">
+            <Link href="/" className="text-2xl font-bold text-blue-600">
+              LOGO
+            </Link>
+            <nav className="space-x-8 hidden md:flex items-center">
+              <Link
+                href="/"
+                className="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors"
+              >
+                Home
+              </Link>
+              <Link
+                href="/#about"
+                className="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors"
+              >
+                About us
+              </Link>
+              <a
+                href="#"
+                className="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors"
+              >
+                Services
+              </a>
+              <Link href="/blog" className="text-sm font-medium text-blue-600">
+                Blog
+              </Link>
+              <Button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-md">
+                Contact us
+              </Button>
+            </nav>
+          </div>
+        </header>
+
+        <div className="max-w-4xl mx-auto p-8">
+          <h1 className="text-3xl font-bold text-red-600 mb-4">Error</h1>
+          <p className="text-gray-600">No blog ID provided.</p>
+        </div>
+      </main>
+    );
+  }
+
+  const blog = await getBlog(id);
+
+  if (!blog) {
+    return (
+      <main className="bg-white text-gray-900 min-h-screen">
+        {/* Header */}
+        <header className="px-8 py-6 border-b border-gray-200">
+          <div className="flex justify-between items-center max-w-6xl mx-auto">
+            <Link href="/" className="text-2xl font-bold text-blue-600">
+              LOGO
+            </Link>
+            <nav className="space-x-8 hidden md:flex items-center">
+              <Link
+                href="/"
+                className="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors"
+              >
+                Home
+              </Link>
+              <Link
+                href="/#about"
+                className="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors"
+              >
+                About us
+              </Link>
+              <a
+                href="#"
+                className="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors"
+              >
+                Services
+              </a>
+              <Link href="/blog" className="text-sm font-medium text-blue-600">
+                Blog
+              </Link>
+              <Button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-md">
+                Contact us
+              </Button>
+            </nav>
+          </div>
+        </header>
+
+        <div className="max-w-4xl mx-auto p-8">
+          <h1 className="text-3xl font-bold text-red-600 mb-4">Blog Not Found</h1>
+          <p className="text-gray-600">The blog post you're looking for doesn't exist or couldn't be loaded.</p>
+        </div>
+      </main>
+    );
+  }
+
+  // Select placeholder image based on blog ID
+  const imageIndex = (blog.id - 1) % placeholderImages.length;
 
   return (
     <main className="bg-white text-gray-900 min-h-screen">
@@ -48,7 +171,7 @@ export default function BlogPage() {
             >
               Services
             </a>
-            <Link href="/#blog" className="text-sm font-medium text-blue-600">
+            <Link href="/blog" className="text-sm font-medium text-blue-600">
               Blog
             </Link>
             <Button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-md">
@@ -58,10 +181,69 @@ export default function BlogPage() {
         </div>
       </header>
 
-      <BlogHero />
-      <BlogDescription />
-      <BlogCards blogs={blogs} />
-      <Cta />
+      {/* Blog Content */}
+      <div className="max-w-4xl mx-auto p-8">
+        <article className="prose prose-lg max-w-none">
+          {/* Blog Image */}
+          <div className="mb-8 flex justify-center">
+            <Image
+              src={placeholderImages[imageIndex]}
+              alt={blog.title}
+              width={800}
+              height={800}
+              className="w-80 h-96 object-center rounded-lg"
+            />
+          </div>
+
+          {/* Blog Header */}
+          <div className="mb-8">
+            <h1 className="text-4xl font-bold text-gray-900 mb-4">{blog.title}</h1>
+            <div className="flex items-center gap-4 text-sm text-gray-500">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center">
+                  <span className="text-white text-xs font-semibold">
+                    U{blog.userId}
+                  </span>
+                </div>
+                <span>User {blog.userId}</span>
+              </div>
+              <span>•</span>
+              <span>Blog ID: {blog.id}</span>
+              <span>•</span>
+              <span>Published on {new Date().toLocaleDateString()}</span>
+            </div>
+          </div>
+
+          {/* Blog Body */}
+          <div className="text-gray-600 leading-relaxed text-lg">
+            {blog.body}
+          </div>
+
+          {/* Back to Blogs Link */}
+          <div className="mt-12 pt-8 border-t border-gray-200">
+            <Link
+              href="/blog"
+              className="inline-flex items-center text-blue-600 hover:text-blue-700 transition-colors"
+            >
+              <svg
+                className="w-4 h-4 mr-2"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                />
+              </svg>
+              Back to All Blogs
+            </Link>
+          </div>
+        </article>
+      </div>
 
       {/* Footer */}
       <footer className="bg-gray-50 border-t border-gray-200 px-2 py-5">
