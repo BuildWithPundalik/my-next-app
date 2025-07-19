@@ -10,6 +10,7 @@ import { useState,useEffect } from "react";
 
 export default function BlogPage() {
   const [blogs, setBlogs] = useState([]);
+
   useEffect(() => {
     const fetchBlogs = async () => {
       const res = await fetch("/api/blogs", { cache: "no-store" });
