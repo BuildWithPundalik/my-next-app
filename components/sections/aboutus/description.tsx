@@ -28,7 +28,7 @@ export default function Description() {
                         web applications and website builders specializing diverse of
                         completed projects.
                     </p>
-                    <Button className="bg-transparent hover:bg-blue-700 text-blue-700 border-1 border-blue-700 px-8 py-3 rounded-md">
+                    <Button className="bg-transparent hover:bg-blue-700 hover:text-white text-blue-700 border-1 border-blue-700 px-8 py-3 rounded-md">
                         Contact us
                     </Button>
                 </div>

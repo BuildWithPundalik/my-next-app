@@ -2,7 +2,7 @@ import React from "react";
 
 const About = () => {
   return (
-    <section className="space-y-10 m-10 bg-gray-50">
+    <section className="space-y-10 mt-16 mb-10 bg-white border-0">
       <div className="flex justify-center gap-10 xs:flex-row">
         <div className="flex gap-10  items-baseline ">
           <img
