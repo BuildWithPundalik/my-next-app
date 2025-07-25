@@ -5,7 +5,7 @@ import Footer from "@/components/footer";
 
 export default function LayoutShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const isLoginPage = pathname === "/";
+  const isLoginPage = pathname === "/" || pathname === "/register";
   return (
     <>
       {!isLoginPage && <Navbar />}
