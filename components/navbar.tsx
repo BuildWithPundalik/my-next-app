@@ -45,6 +45,11 @@ const Navbar = () => {
           <Button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-md">
             Contact us
           </Button>
+          <Button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-md">
+            <Link href="/" className="text-white">
+              Log Out
+            </Link>
+          </Button>
         </nav>
       </div>
     </header>

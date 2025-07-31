@@ -48,7 +48,7 @@ export default function LoginPage() {
         }
 
         // Redirect to aboutus page (since /home doesn't exist)
-        router.push('/aboutus');
+        router.push('/home');
       }
 
     } catch (err) {

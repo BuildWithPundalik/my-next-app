@@ -146,40 +146,6 @@ export default async function BlogPage({ params }: PageProps) {
 
   return (
     <main className="bg-white text-gray-900 min-h-screen">
-      {/* Header */}
-      <header className="px-8 py-6 border-b border-gray-200">
-        <div className="flex justify-between items-center max-w-6xl mx-auto">
-          <Link href="/" className="text-2xl font-bold text-blue-600">
-            LOGO
-          </Link>
-          <nav className="space-x-8 hidden md:flex items-center">
-            <Link
-              href="/"
-              className="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors"
-            >
-              Home
-            </Link>
-            <Link
-              href="/#about"
-              className="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors"
-            >
-              About us
-            </Link>
-            <a
-              href="#"
-              className="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors"
-            >
-              Services
-            </a>
-            <Link href="/blog" className="text-sm font-medium text-blue-600">
-              Blog
-            </Link>
-            <Button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-md">
-              Contact us
-            </Button>
-          </nav>
-        </div>
-      </header>
 
       {/* Blog Content */}
       <div className="max-w-4xl mx-auto p-8">
